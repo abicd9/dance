@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bharatanatyam Theory Notes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{
+  --bg:#fbf6ec; --card:#fffdf8; --ink:#2b1d17; --muted:#6f5d52; --accent:#8c1c2b; --accent-ink:#ffffff;
+  --gold:#b8862b; --line:#e6d9c3; --soft:#f4e9d3; --ok:#2f7d4f; --bad:#b3261e;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1a1412; --card:#241c19; --ink:#f3e9dc; --muted:#b9a99a; --accent:#e0707d; --accent-ink:#1a1412;
+    --gold:#e2b25a; --line:#3a2e29; --soft:#2d2320; --ok:#6cc48c; --bad:#ff8a80;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1a1412; --card:#241c19; --ink:#f3e9dc; --muted:#b9a99a; --accent:#e0707d; --accent-ink:#1a1412;
+  --gold:#e2b25a; --line:#3a2e29; --soft:#2d2320; --ok:#6cc48c; --bad:#ff8a80;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto;padding:20px 16px 60px}
+header h1{margin:0;font-size:1.7rem;color:var(--accent);letter-spacing:.2px}
+header p{margin:.25rem 0 0;color:var(--muted);font-size:.95rem}
+nav{display:flex;gap:6px;overflow-x:auto;padding:14px 0 10px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;border-bottom:1px solid var(--line);margin-bottom:16px}
+nav button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:999px;font:inherit;font-size:.9rem;cursor:pointer}
+nav button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+section{display:none}
+section.on{display:block}
+h2{color:var(--accent);margin:.2rem 0 .3rem;font-size:1.3rem}
+h3{margin:1.2rem 0 .4rem;font-size:1.05rem;color:var(--gold)}
+.sub{color:var(--muted);font-size:.92rem;margin:0 0 12px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 12px}
+.btn{border:1px solid var(--accent);background:transparent;color:var(--accent);padding:6px 12px;border-radius:8px;font:inherit;font-size:.85rem;cursor:pointer}
+.btn.fill{background:var(--accent);color:var(--accent-ink)}
+.pill{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.8rem;color:var(--muted)}
+.prog{height:6px;background:var(--soft);border-radius:6px;overflow:hidden;flex:1;min-width:80px}
+.prog i{display:block;height:100%;background:var(--ok);width:0;transition:width .25s}
+input[type=search]{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 10px;border-radius:8px;font:inherit;font-size:.9rem;min-width:0;flex:1;max-width:240px}
+
+/* shlokas */
+.sh h3{margin-top:0}
+.lines{font-size:1.08rem;font-style:italic;margin:6px 0 10px}
+.lines div{padding:2px 6px;border-radius:6px}
+.meaning{display:none;border-left:3px solid var(--gold);padding:4px 10px;color:var(--ink);background:var(--soft);border-radius:0 8px 8px 0;font-size:.95rem}
+.meaning.show{display:block}
+
+/* cards grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 10px 8px;cursor:pointer;min-height:92px;display:flex;flex-direction:column;gap:4px}
+.card:hover{border-color:var(--gold)}
+.card .num{font-size:.72rem;color:var(--muted)}
+.card .nm{font-weight:bold;font-size:1rem}
+.card .mn{font-size:.85rem;color:var(--muted);display:none}
+.grid.all .card .mn,.card.flip .mn{display:block}
+.card.done{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 10%,var(--card))}
+.card label{margin-top:auto;font-size:.75rem;color:var(--muted);display:flex;gap:5px;align-items:center;cursor:pointer}
+.hcard{cursor:default}
+
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--gold);font-weight:bold;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 12px;font:inherit;font-size:.88rem;cursor:pointer}
+.chip.on{background:var(--ok);border-color:var(--ok);color:#fff}
+ul.tight{margin:.3rem 0;padding-left:1.1rem}
+ul.tight li{margin:.25rem 0}
+
+.popup {
+    display: none;
+    position: fixed;
+    inset:0;
+    background: rgba(0,0,0,0.7);
+    z-index:9999;
+}
+
+.popup-content {
+    background: linear-gradient(135deg, #ffdcf2, #db7ff7);
+    color: #000000;
+    width:450px;
+    max-width:90%;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    margin: 15% auto;
+    box-shadow: 0 0 25px rgb(255, 214, 214);
+}
+.popup-content h2{
+    margin-top: 0;
+    color: #8c1c2b;
+}
+
+.popup-content button{
+    margin-top: 15px;
+    background: #8c1c2b;
+    color:bisque;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Bharatanatyam Theory Notes</h1>
+  <p>Tap to reveal, and tick off what you have learned.</p>
+  <div class="tools" style="margin-top:12px"><span class="pill">Overall learned</span><div class="prog"><i id="p-all"></i></div><span class="pill" id="c-all"></span></div>
+</header>
+
+<nav id="tabs">
+  <button data-t="shlokas" class="on">Shlokams</button>
+  <button data-t="bhedas">Bhedas</button>
+  <button data-t="hastas">Hastas</button>
+  <button data-t="bharata">Bharatanatyam</button>
+  <button data-t="forms">Dance Forms</button>
+  <button data-t="practicals">Practicals</button>
+</nav>
+
+<!-- SHLOKAMS -->
+<section id="shlokas" class="on">
+  <h2>Shlokams</h2>
+  <p class="sub">Tap “Meaning” to reveal the one-line meaning.</p>
+  <div id="shlokaList"></div>
+</section>
+
+<!-- BHEDAS -->
+<section id="bhedas">
+  <h2>Shiro Bedha &amp; Drishti Bedha</h2>
+  <p class="sub">Tap a card to reveal its meaning. Tick “Learned” as you go.</p>
+
+  <h3>Shiro Bedha · head movements (9)</h3>
+  <div class="tools"><button class="btn" data-all="shiro">Reveal all</button><div class="prog"><i id="p-shiro"></i></div><span class="pill" id="c-shiro"></span></div>
+  <div class="grid" id="g-shiro"></div>
+
+  <h3>Drishti Bedha · eye movements (8)</h3>
+  <div class="tools"><button class="btn" data-all="drishti">Reveal all</button><div class="prog"><i id="p-drishti"></i></div><span class="pill" id="c-drishti"></span></div>
+  <div class="grid" id="g-drishti"></div>
+</section>
+
+<!-- HASTAS -->
+<section id="hastas">
+  <h2>Hastas · Hand gestures</h2>
+  <h3><a href="https://drive.google.com/file/d/1YlgHejAZ-wB2mk91D8AoVYOFUgdPGvw2/view?usp=sharing"> Click Here for a video on Hand Gestures </a></h3>
+  <p class="sub">Asamyuta = single hand (28). Samyuta = both hands (24). Tick “Learned” as you go.</p>
+  <div class="tools"><input type="search" id="hfilter" placeholder="Filter by name…"></div>
+
+  <h3>Asamyuta Hastas (28)</h3>
+  <div class="tools"><div class="prog"><i id="p-asam"></i></div><span class="pill" id="c-asam"></span></div>
+  <div class="grid" id="g-asam"></div>
+
+  <h3>Samyuta Hastas (24)</h3>
+  <div class="tools"><div class="prog"><i id="p-sam"></i></div><span class="pill" id="c-sam"></span></div>
+  <div class="grid" id="g-sam"></div>
+</section>
+
+<!-- BHARATANATYAM -->
+<section id="bharata">
+  <h2>Notes on Bharatanatyam</h2>
+  <div class="box"><table>
+    <tr><th style="width:32%">Topic</th><th>Note</th></tr>
+    <tr><td>Age</td><td>The oldest form of the classical dances of India.</td></tr>
+    <tr><td>Origin</td><td>Originated from the <i>Natya Shastra</i>.</td></tr>
+    <tr><td>Name</td><td><b>Bha</b>va (expression) + <b>Ra</b>ga (melody) + <b>Ta</b>la (rhythm) + <i>Natyam</i> (dance).</td></tr>
+    <tr><td>Three elements</td><td><b>Nritta</b> pure movement · <b>Nritya</b> movement with expression · <b>Natya</b> dramatic storytelling.</td></tr>
+  </table></div>
+</section>
+
+<!-- DANCE FORMS -->
+<section id="forms">
+  <h2>7 Classical Dance Forms of India</h2>
+
+  <div class="tools"><button class="btn" data-all="dances">Reveal all keys</button><div class="prog"><i id="p-dances"></i></div><span class="pill" id="c-dances"></span></div>
+  <p class="sub">Tap a card to reveal its origin.</p>
+  <div class="grid" id="g-dances"></div>
+</section>
+
+<!-- PRACTICALS -->
+<section id="practicals">
+  <h2>Practicals</h2>
+  <p class="sub">Tick each item as you practise it.</p>
+  <div class="tools"><div class="prog"><i id="p-prac"></i></div><span class="pill" id="c-prac"></span></div>
+  <div id="pracList"></div>
+</section>
+
+<!-- Congratulations popup-->
+ <div id="congratsPopup" class = "popup">
+    <div class=" popup-content">
+        <h2>🎉 Congratulations! </h2>
+        <p>
+            You have mastered your theory!
+        </p>
+
+        <p>
+            Keep Dancing 💃!
+        </p>
+
+        <button onclick="closePopup()"> Continue </button>
+    </div>
+ </div>
+
+</div>
+
+<script>
+/* ---------- data ---------- */
+const shlokas=[
+ {t:"1. Dhyana Shlokam",l:["Angikam Bhuvanam Yasya","Vachikam Sarva Vangmayam","Aaharyam Chandra Taradi","Tam Namah (or Vande) Saattvikam Shivam"],
+  m:"I bow to Lord Shiva, whose body is the universe, whose speech is all language, whose ornaments are the moon and stars, and whose nature is pure goodness."},
+ {t:"2. Guru Shlokam",l:["Gurur Brahma Gurur Vishnu","Gurur Devo Maheshwarah","Guru Saakshaat Param Brahma","Tasmai Shri Gurave Namah"],
+  m:"The Guru is Brahma, Vishnu and Maheshwara, and the Guru is the Supreme Reality itself; salutations to that Guru."},
+ {t:"3. Bhoomidevi Shlokam",l:["Vishnu Sakthi Samutpanne Chitra Varne Mahitale","Aneka Ratna Sampanne Bhumidevi Namostute","Samudra Vasane Devi Parvata Stana Mandale","Natyam Karishye Bhudevi Pada Ghatam Kshamaswa Me"],
+  m:"O Mother Earth, born of Vishnu’s power, adorned with countless jewels, robed in oceans and bearing mountains, forgive me for stamping upon you as I begin to dance."}
+];
+const shiro=[["Sama","Head held level and straight"],["Udvahita","Head raised upward"],["Adhomukha","Head lowered downward"],["Alolita","Head rotated in a circle"],["Dhuta","Head turned left and right (denial)"],["Kampita","Head shaken up and down"],["Paravrtta","Head turned quickly to one side"],["Utkshipta","Head tossed diagonally upward"],["Parivahita","Head tilted shoulder to shoulder, swaying"]];
+const drishti=[["Sama","Steady, straight gaze"],["Alokita","Eyes rolled in a circle"],["Sachi","Sideways glance through the corner of the eye"],["Pralokita","Eyes moving from side to side"],["Nimilita","Eyes half-closed"],["Ullokita","Looking upward"],["Anuvrtta","Quick glance up and down"],["Avalokita","Looking downward"]];
+const asam=["Pataka","Tripatako","Ardhapataka","Kartarimukhaha","Mayurakyo","Ardhachandrascha","Arala","Shukatundakaha","Mushtishcha","Shikharakyascha","Kapitha","Katakamukhaha","Suchi","Chandrakala","Padmakosha","Sarpashirasthatha","Mrigashirsha","Simhamukhaha","Kangula","Alapadmakmakaha","Chature","Bhramaraschaiva","Hamsasya","Hamsapakshaha","Sandamsho","Mukulaschaiva","Tamrachuda","Trishulakaha"];
+const sam=["Anjali","Kapota","Karkata","Svastika","Dola","Pushpaputa","Utsanga","Shivalinga","Katakavardhana","Kartari Svastika","Shakata","Shankha","Chakra","Samputa","Pasha","Kilaka","Matsya","Kurma","Varaha","Garuda","Nagabandha","Khatva","Bherunda","Avahitta"];
+const dances=[
+ ["Bharatanatyam","Tamil Nadu","Oldest classical form; Bhava + Raga + Talam; from the Natya Shastra"],
+ ["Kathak","North India (Uttar Pradesh)","Katha = story; storytellers, fast spins and footwork"],
+ ["Kathakali","Kerala","Katha + Kali = story-play; elaborate face makeup and costume"],
+ ["Kuchipudi","Andhra Pradesh","Named after a village; dance-drama with the plate dance (Tarangam)"],
+ ["Odissi","Odisha","Sculpture-like poses; the graceful Tribhanga (three-bend) stance"],
+ ["Manipuri","Manipur","Gentle, flowing Raslila of Radha and Krishna"],
+ ["Mohiniyattam","Kerala","Dance of Mohini, the enchantress; soft swaying movements"],
+ ["Sattriya","Assam","Born in the Sattras (monasteries); founded by Srimanta Sankardev"]
+];
+const prac=[
+ {g:"Bhoomi Namaskaram",items:[]},
+ {g:"Adavus",sub:[
+  {n:"Thattadavu",c:8},{n:"Naatadavu",c:8},
+  {n:"Paraval Adavu",c:3},
+  {n:"Kudithu Mettu Adavus (Thai Tath Thai Hi)",c:5},
+  {n:"Korvai Adavus (Thath Thai Thaam)",c:4},
+  {n:"Thatti Mettu Adavus",labels:["Thakkitta","Thakkathimmi"]},
+  {n:"Thath Thai Tha Ha",c:3}]},
+ {g:"Alarippu",items:[]},
+ {g:"Ganapathy Rayan",items:[]}
+];
+
+/* ---------- state ---------- */
+let state={};
+try{state=JSON.parse(localStorage.getItem("bn:state")||"{}")||{}}catch(e){state={}}
+state.congratsShown = false;
+save();
+function save(){try{localStorage.setItem("bn:state",JSON.stringify(state))}catch(e){}}
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+function closePopup() {
+    document.getElementById("congratsPopup").style.display = "none";
+}
+
+/* ---------- tabs ---------- */
+$("#tabs").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  $$("#tabs button").forEach(x=>x.classList.toggle("on",x===b));
+  $$("section").forEach(s=>s.classList.toggle("on",s.id===b.dataset.t));
+  window.scrollTo(0,0);
+});
+
+/* ---------- shlokas ---------- */
+const sl=$("#shlokaList");
+shlokas.forEach((s,i)=>{
+  const d=document.createElement("div"); d.className="box sh";
+  d.innerHTML=`<h3>${s.t}</h3><div class="lines">${s.l.map(x=>`<div>${x}</div>`).join("")}</div>
+  <button class="btn" data-m="${i}">Meaning</button>
+  <div class="meaning" id="mean${i}" style="margin-top:10px">${s.m}</div>`;
+  sl.appendChild(d);
+});
+sl.addEventListener("click",e=>{
+  const b=e.target.closest("[data-m]");
+  if(b) $("#mean"+b.dataset.m).classList.toggle("show");
+});
+
+/* ---------- card grids ---------- */
+function markLearned(key,total,c,i,checked){
+  let arr=state["l:"+key]||[];
+  arr=checked?[...new Set([...arr,i])]:arr.filter(x=>x!==i);
+  state["l:"+key]=arr; c.classList.toggle("done",checked); save(); prog(key,total);
+}
+const TOTALS={shiro:shiro.length,drishti:drishti.length,asam:asam.length,sam:sam.length,dances:dances.length};
+function prog(key,total){
+  const n=(state["l:"+key]||[]).length;
+  $("#p-"+key).style.width=(n/total*100)+"%";
+  $("#c-"+key).textContent=n+" / "+total+" learned";
+  let done=0,all=0;
+  for(const k in TOTALS){all+=TOTALS[k];done+=(state["l:"+k]||[]).length}
+  if (done === 77 && !state.congratsShown) {
+    document.getElementById("congratsPopup").style.display= "block";
+    state.congratsShown = true;
+    save();
+  }
+  $("#p-all").style.width=(done/all*100)+"%";
+  $("#c-all").textContent=done+" / "+all+" learned";
+}
+/* text cards (bhedas, dance forms): tap to reveal meaning */
+function buildGrid(key,items,labelFn){
+  const g=$("#g-"+key); g.innerHTML="";
+  const done=state["l:"+key]||[];
+  items.forEach((it,i)=>{
+    const c=document.createElement("div");
+    c.className="card"+(done.includes(i)?" done":"");
+    c.dataset.i=i;
+    c.innerHTML=`<span class="num">${i+1}</span><span class="nm">${it[0]}</span><span class="mn">${labelFn?labelFn(it):it[1]}</span>
+    <label><input type="checkbox" ${done.includes(i)?"checked":""}> Learned</label>`;
+    g.appendChild(c);
+  });
+  g.addEventListener("click",e=>{
+    const c=e.target.closest(".card"); if(!c) return;
+    if(e.target.matches("input")){markLearned(key,items.length,c,+c.dataset.i,e.target.checked);return;}
+    if(e.target.closest("label")) return;
+    c.classList.toggle("flip");
+  });
+  prog(key,items.length);
+}
+/* simple cards (hastas): name + Learned tick */
+function buildSimpleGrid(key,names){
+  const g=$("#g-"+key); g.innerHTML="";
+  const done=state["l:"+key]||[];
+  names.forEach((n,i)=>{
+    const c=document.createElement("div");
+    c.className="card hcard"+(done.includes(i)?" done":"");
+    c.dataset.i=i; c.dataset.n=n.toLowerCase();
+    c.innerHTML=`<span class="num">${i+1}</span><span class="nm">${n}</span>
+    <label><input type="checkbox" ${done.includes(i)?"checked":""}> Learned</label>`;
+    g.appendChild(c);
+  });
+  g.addEventListener("change",e=>{
+    if(!e.target.matches("input")) return;
+    const c=e.target.closest(".card"); markLearned(key,names.length,c,+c.dataset.i,e.target.checked);
+  });
+  prog(key,names.length);
+}
+buildGrid("shiro",shiro);
+buildGrid("drishti",drishti);
+buildSimpleGrid("asam",asam);
+buildSimpleGrid("sam",sam);
+buildGrid("dances",dances,d=>`<b>${d[1]}</b><br>${d[2]}`);
+
+$$("[data-all]").forEach(b=>b.onclick=()=>{
+  const g=$("#g-"+b.dataset.all); const on=!g.classList.contains("all");
+  g.classList.toggle("all",on);
+  if(!on) $$(".card",g).forEach(c=>c.classList.remove("flip"));
+  b.textContent=on?"Hide all":"Reveal all"+(b.dataset.all==="dances"?" keys":"");
+});
+$("#hfilter").addEventListener("input",e=>{
+  const q=e.target.value.trim().toLowerCase();
+  ["asam","sam"].forEach(k=>$$("#g-"+k+" .card").forEach(c=>c.style.display=c.dataset.n.includes(q)?"":"none"));
+});
+
+/* ---------- practicals ---------- */
+const pl=$("#pracList"); let total=0;
+function chipRow(id,label){total++;return `<button class="chip ${state["p:"+id]?"on":""}" data-p="${id}">${label}</button>`}
+prac.forEach((p,gi)=>{
+  const box=document.createElement("div"); box.className="box";
+  if(p.sub){
+    box.innerHTML=`<b>${p.g}</b>`+p.sub.map((s,si)=>{
+      const labels=s.labels||Array.from({length:s.c},(_,k)=>String(k+1));
+      const range=s.labels?"":` (1-${s.c})`;
+      return `<div style="margin-top:10px">${s.n}${range}<div class="chips">${labels.map((l,k)=>chipRow(`${gi}-${si}-${k}`,l)).join("")}</div></div>`;
+    }).join("");
+  } else {
+    box.innerHTML=`<div class="chips">${chipRow(gi+"-0-0",p.g)}</div>`;
+  }
+  pl.appendChild(box);
+});
+function pracProg(){
+  const n=$$("#pracList .chip.on").length;
+  $("#p-prac").style.width=(n/total*100)+"%"; $("#c-prac").textContent=n+" / "+total+" practised";
+}
+pl.addEventListener("click",e=>{
+  const c=e.target.closest(".chip"); if(!c) return;
+  const on=c.classList.toggle("on"); state["p:"+c.dataset.p]=on; save(); pracProg();
+});
+pracProg();
+</script>
+</body>
+</html>
